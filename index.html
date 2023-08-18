@@ -25,7 +25,42 @@
                 <li id="custom-list">custom list</li>
             </ul> 
         </aside>   
-        <section class="main-task-list" id="main-task-list"></section>
+        <section class="main-task-list" id="main-task-list">
+            <header>Task</header>
+            <form action="task-list" class="task-list" id="task-list">
+                <div class="task-item">
+                    <input class="checkbox" type="checkbox">
+                    <label class="label" for="task-list">Task1</label>
+                    <input class="checkbox-important" type="checkbox">
+                    <label class="label-important" for="important">Important</label>
+                </div>
+            </form>
+            <form action="task-list" class="task-list" id="task-list">
+                <div class="task-item">
+                    <input class="checkbox" type="checkbox">
+                    <label class="label" for="task-list">Task2</label>
+                    <input class="checkbox-important" type="checkbox">
+                    <label class="label-important" for="important">Important</label>
+                </div>
+            </form>
+            <form action="task-list" class="task-list" id="task-list">
+                <div class="task-item">
+                    <input class="checkbox" type="checkbox">
+                    <label class="label" for="task-list">Task3</label>
+                    <input class="checkbox-important" type="checkbox">
+                    <label class="label-important" for="important">Important</label>
+                </div>
+            </form>
+            <form action="task-list" class="task-list" id="taskList">
+                <div class="task-item">
+                    <input class="checkbox" type="checkbox">
+                    <label class="label" for="task-list">Task4</label>
+                    <input class="checkbox-important" type="checkbox">
+                    <label class="label-important" for="important">Important</label>
+                </div>
+            </form>
+            <button type="button" class="button-new-task" id="buttonNewTask">New Task</button>
+        </section>
         <section class="main-important-list" id="main-important-list"></section>
         <section class="main-custom-list" id="main-custom-list"></section>
         <div class="modal" tabindex="-1">
@@ -46,7 +81,6 @@
     </div>
     </div>
     </main>
-    <script src="script.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
 </body>
 </html>
