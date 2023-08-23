@@ -110,7 +110,7 @@ header{
 
 .task-item {
     display: grid;
-    grid-template-columns: 10% 50% 10% auto; 
+    grid-template-columns: 5% 40% 5% 35% 5%; 
     align-items: center;
     padding: 5px;
 }
@@ -143,4 +143,16 @@ header{
 .label,
 .label-important {
     margin: 0;
+}
+
+.icon-delete {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+}
+
+.icon-delete img {
+    width: 20px;
+    height: 20px;
 }

@@ -19,53 +19,44 @@
 <body>
     <main class="main-content">
         <aside class="sidebar" id="sidebar">
-            <ul>Task
+            <ul>
+                <li id="header-task-list"><strong>TASK's</strong></li>
+                <hr>
                 <li id="important-list">important</li>
-                <li id="important-complete">complete</li>
+                <li id="important-complete">completed</li>
                 <li id="custom-list">custom list</li>
+                <select name="custom-list" id="custom-list" style="display: none;">
+                    <option value="1">Custom list 1</option>
+                    <option value="2">Custom list 2</option>
+                    <option value="3">Custom list 3</option>
+                </select>
             </ul> 
         </aside>   
         <section class="main-task-list" id="main-task-list">
             <header>Task</header>
             <form action="task-list" class="task-list" id="task-list">
-                <div class="task-item">
+                <div class="task-item" id="mainTasklItem">
                     <input class="checkbox" type="checkbox">
-                    <label class="label" for="task-list">Task1</label>
+                    <label class="label" for="task-list">Example Task</label>
                     <input class="checkbox-important" type="checkbox">
                     <label class="label-important" for="important">Important</label>
-                </div>
-            </form>
-            <form action="task-list" class="task-list" id="task-list">
-                <div class="task-item">
-                    <input class="checkbox" type="checkbox">
-                    <label class="label" for="task-list">Task2</label>
-                    <input class="checkbox-important" type="checkbox">
-                    <label class="label-important" for="important">Important</label>
-                </div>
-            </form>
-            <form action="task-list" class="task-list" id="task-list">
-                <div class="task-item">
-                    <input class="checkbox" type="checkbox">
-                    <label class="label" for="task-list">Task3</label>
-                    <input class="checkbox-important" type="checkbox">
-                    <label class="label-important" for="important">Important</label>
-                </div>
-            </form>
-            <form action="task-list" class="task-list" id="taskList">
-                <div class="task-item">
-                    <input class="checkbox" type="checkbox">
-                    <label class="label" for="task-list">Task4</label>
-                    <input class="checkbox-important" type="checkbox">
-                    <label class="label-important" for="important">Important</label>
+                    <button class="icon-delete" id="iconDelete"><img src="icons/borrar.png" alt="Delete Icon"></button>
                 </div>
             </form>
             <button type="button" class="button-new-task" id="buttonNewTask">New Task</button>
         </section>
-        <section class="main-important-list" id="main-important-list" style="display: none;">
+        <section class="main-important-list" id="mainImportantList" style="display: none;">
             <header>Important</header>
             <div id="important-tasks-container"></div>
         </section>
-        <section class="main-custom-list" id="main-custom-list"></section>
+        <section class="main-completed-list" id="mainCompletedList" style="display: none;">
+            <header>Completed</header>
+            <div id="completed-tasks-container" class="task-list"></div>
+        </section>
+        <section class="main-custom-list" id="mainCustomList" style="display: none;">
+            <header>Custom List</header>
+            <div id="custom-list-container"></div>
+        </section>
         <div class="modal" tabindex="-1">
     <div class="modal-dialog">
     <div class="modal-content">
@@ -93,14 +84,14 @@
             <label class="form-check-label" for="inlineCheckbox2">Important</label>
           </div>
           <hr>
-          <select class="form-select" aria-label="Default select example">
+          <select class="form-select" id="customListSelect" aria-label="Default select example">
             <option selected>Select a custom list</option>
             <option value="1">Custom list 1</option>
             <option value="2">Custom list 2</option>
             <option value="3">Custom list 3</option>
           </select>
           <br>
-          <select class="form-select" aria-label="Default select example">
+          <select class="form-select" id="taskColorSelect" aria-label="Default select example">
             <option selected>Select task color</option>
             <option value="1">green</option>
             <option value="2">yellow</option>
