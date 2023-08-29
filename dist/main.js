@@ -1,14 +1,16 @@
-import { addTaskToCompleted, addTaskToImportant } from "./completed.js";
-import { attachClickHandlersToImportantTasks } from "./important.js";
+import { addTaskToCompleted, addTaskToImportant, attachClickHandlersToCompletedTasks } from "./completed.js";
+import { attachClickHandlersToImportantTasks, showImportantTaskDetails } from "./important.js";
 const buttonNewTask = document.getElementById("buttonNewTask");
 const modal = document.querySelector(".modal");
 const saveChangesButton = document.querySelector(".modal-footer .btn-primary");
+const importantTasksContainer = document.getElementById("important-tasks-container");
+const tasks = [];
 window.addEventListener("load", init);
 function init() {
     const tasks = [];
     const importantSidebarLink = document.getElementById("important-list");
     const taskSidebarLink = document.getElementById("task-list");
-    const mainImportantList = document.getElementById("main-important-list");
+    const mainImportantList = document.getElementById("mainImportantList");
     const mainTaskList = document.getElementById("main-task-list");
     const importantTasksContainer = document.getElementById("important-tasks-container");
     const cancelButton = document.querySelector(".modal-footer .btn-secondary");
@@ -172,3 +174,16 @@ function init() {
     });
 }
 ;
+attachClickHandlersToImportantTasks();
+attachClickHandlersToCompletedTasks();
+importantTasksContainer.addEventListener("click", (event) => {
+    const target = event.target;
+    if (target) {
+        const taskItem = target.closest(".task-item");
+        if (taskItem) {
+            const index = parseInt(taskItem.getAttribute("data-index") || "0");
+            const taskDetails = tasks[index];
+            showImportantTaskDetails(taskDetails, modal);
+        }
+    }
+});

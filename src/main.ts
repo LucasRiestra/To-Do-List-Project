@@ -1,16 +1,15 @@
 
 import { addTaskToCompleted, addTaskToImportant, attachClickHandlersToCompletedTasks } from "./completed.js";
-import { attachClickHandlersToImportantTasks } from "./important.js";
+import { attachClickHandlersToImportantTasks, showImportantTaskDetails } from "./important.js";
 
 const buttonNewTask = document.getElementById("buttonNewTask") as HTMLButtonElement;
 const modal = document.querySelector(".modal") as HTMLElement;
 const saveChangesButton = document.querySelector(".modal-footer .btn-primary") as HTMLButtonElement;
- 
-window.addEventListener("load", init); 
 
-function init() {
+const importantTasksContainer = document.getElementById("important-tasks-container") as HTMLElement;
+const tasks: TaskDetails[] = [];
 
- interface TaskDetails {
+interface TaskDetails {
     title: string;
     description: string;
     completed: boolean;
@@ -18,16 +17,31 @@ function init() {
     customListIndex: string;
     taskColorIndex: string;
 }
+ 
+window.addEventListener("load", init); 
+
+function init() {
+
+    interface TaskDetails {
+        title: string;
+        description: string;
+        completed: boolean;
+        important: boolean;
+        customListIndex: string;
+        taskColorIndex: string;
+    }
 
  const tasks: TaskDetails[] = [];
 
     const importantSidebarLink = document.getElementById("important-list") as HTMLElement;
     const taskSidebarLink = document.getElementById("task-list") as HTMLElement;
-    const mainImportantList = document.getElementById("main-important-list") as HTMLElement;
+    const mainImportantList = document.getElementById("mainImportantList") as HTMLElement;
     const mainTaskList = document.getElementById("main-task-list") as HTMLElement;
     const importantTasksContainer = document.getElementById("important-tasks-container") as HTMLElement;
     const cancelButton = document.querySelector(".modal-footer .btn-secondary") as HTMLButtonElement;
     const taskList = document.getElementById("task-list") as HTMLElement;
+
+
 
     buttonNewTask.addEventListener("click", () => {
         modal.style.display = "block";
@@ -45,7 +59,6 @@ function init() {
         important.checked = false;  
         customListSelect.selectedIndex = 0;  
         taskColorSelect.selectedIndex = 0; 
-
     });
 
     const closeModalButton = document.querySelector(".btn-close") as HTMLButtonElement;
@@ -139,6 +152,7 @@ function init() {
         } else {
             const taskList = document.getElementById("task-list") as HTMLElement;
             taskList.appendChild(taskItem);
+        
 
         taskItem.addEventListener("click", () => {
             const titleModal = document.getElementById("titleNewTask") as HTMLInputElement;
@@ -183,6 +197,8 @@ function init() {
         modal.style.display = "none";
     });
 
+    
+
     importantSidebarLink.addEventListener("click", () => {
         mainImportantList.style.display = "block";
         mainTaskList.style.display = "none";
@@ -220,3 +236,21 @@ sidebarItems.forEach((item, index) => {
         clickedSection.style.display = "block";
     });
 })};
+
+
+
+attachClickHandlersToImportantTasks();
+
+attachClickHandlersToCompletedTasks();
+importantTasksContainer.addEventListener("click", (event) => {
+    const target = event.target as HTMLElement; 
+
+    if (target) {
+        const taskItem = target.closest(".task-item");
+        if (taskItem) {
+            const index = parseInt(taskItem.getAttribute("data-index") || "0");
+            const taskDetails = tasks[index];
+            showImportantTaskDetails(taskDetails, modal);
+        }
+    }
+});

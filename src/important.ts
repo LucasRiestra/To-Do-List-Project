@@ -8,27 +8,10 @@ interface TaskDetails {
 }
 
 const tasks: TaskDetails[] = [];
-const taskItem = document.querySelector(".task-item") as HTMLElement;
-const mainTaskContainer = document.getElementById("mainTasklItem") as HTMLElement;
-const importantTasksContainer = document.getElementById("important-tasks-container") as HTMLElement;
+const importantTasksContainer = document.querySelector(".tasks-item") as HTMLElement;
 
-export function addTaskToImportant(taskItem: HTMLElement, taskDetails: TaskDetails) {
-    const index = tasks.length; 
-    taskItem.setAttribute("data-index", index.toString());
-    importantTasksContainer.appendChild(taskItem);
-}
 
-export function attachClickHandlersToImportantTasks() {
-    const importantTasks = document.querySelectorAll(".important-task-item");
 
-    importantTasks.forEach((taskItem) => {
-        taskItem.addEventListener("click", () => {
-            const index = parseInt(taskItem.getAttribute("data-index") || "0");
-            const taskDetails = tasks[index]; 
-            openModalWithTaskDetails(taskDetails);
-        });
-    });
-}
 
 export function openModalWithTaskDetails(taskDetails: TaskDetails) {
     const modal = document.querySelector(".modal") as HTMLElement;
@@ -48,3 +31,60 @@ export function openModalWithTaskDetails(taskDetails: TaskDetails) {
     customListSelectModal.value = taskDetails.customListIndex;
     taskColorSelectModal.value = taskDetails.taskColorIndex;
 }
+
+export function addTaskToImportant(taskItem: HTMLElement, taskDetails: TaskDetails) {
+    tasks.push(taskDetails); // Agregar la tarea al array
+    importantTasksContainer.appendChild(taskItem);
+    attachClickHandlersToImportantTasks(); // Vuelve a adjuntar los manejadores de clic
+}
+
+export function attachClickHandlersToImportantTasks() {
+    const importantTasks = document.querySelectorAll(".task-item");
+
+    importantTasks.forEach((taskItem, index) => {
+        taskItem.addEventListener("click", () => {
+            const taskDetails = tasks[index]; // Usa el índice correspondiente en el array
+            openModalWithTaskDetails(taskDetails);
+        });
+    });
+}
+
+
+export function attachClickHandlersToTaskItems() {
+    const taskItems = document.querySelectorAll(".task-item");
+
+    taskItems.forEach((taskItem, index) => {
+        taskItem.addEventListener("click", (event) => {
+            const clickedTaskItem = event.currentTarget as HTMLElement;
+            const clickedIndex = parseInt(clickedTaskItem.getAttribute("data-index") || "0");
+            const taskDetails = tasks[clickedIndex];
+            openModalWithTaskDetails(taskDetails);
+        });
+    });
+}
+
+export function showImportantTaskDetails(taskDetails: TaskDetails, modal: HTMLElement) {
+    const titleModal = document.getElementById("titleNewTask") as HTMLInputElement;
+    const descriptionModal = document.getElementById("descriptionText") as HTMLTextAreaElement;
+    const completedModal = document.getElementById("inlineCheckboxCompleted") as HTMLInputElement;
+    const importantModal = document.getElementById("inlineCheckboxImportant") as HTMLInputElement;
+    const customListSelectModal = document.getElementById("customListSelect") as HTMLSelectElement;
+    const taskColorSelectModal = document.getElementById("taskColorSelect") as HTMLSelectElement;
+
+    titleModal.value = taskDetails.title;
+    descriptionModal.value = taskDetails.description;
+    completedModal.checked = taskDetails.completed;
+    importantModal.checked = taskDetails.important;
+    customListSelectModal.value = taskDetails.customListIndex;
+    taskColorSelectModal.value = taskDetails.taskColorIndex;
+
+    modal.style.display = "block";
+}
+
+const taskItems = document.querySelectorAll(".task-item");
+
+    taskItems.forEach((taskItem, index) => {
+        taskItem.addEventListener("click", () => {
+            openModalWithTaskDetails(tasks[index]);
+        });
+    });

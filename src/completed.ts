@@ -7,17 +7,15 @@ interface TaskDetails {
     taskColorIndex: string;
 }
 
-
 const tasks: TaskDetails[] = [];
 const completedTasksContainer = document.getElementById("completed-tasks-container") as HTMLElement;
 const importantTasksContainer = document.getElementById("important-tasks-container") as HTMLElement;
 
 export function addTaskToCompleted(taskItem: HTMLElement, taskDetails: TaskDetails) {
-    const index = tasks.length; // Asegúrate de que "tasks" esté disponible aquí
+    const index = tasks.length; 
     taskItem.setAttribute("data-index", index.toString());
     completedTasksContainer.appendChild(taskItem);
 }
-
 
 export function addTaskToImportant(taskItem: HTMLElement, taskDetails: TaskDetails) {
     const index = tasks.length;
