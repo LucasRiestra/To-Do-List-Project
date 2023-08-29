@@ -6,6 +6,9 @@
     <title>ToDoList App</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
     <link rel="stylesheet" href="styles.css">
+    <script type="module" src="dist/main.js"></script>
+    <script type="module" src="dist/completed.js"></script>
+    <script type="module" src="dist/important.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Preahvihear&display=swap" rel="stylesheet">
@@ -35,10 +38,10 @@
         <section class="main-task-list" id="main-task-list">
             <header>Task</header>
             <form action="task-list" class="task-list" id="task-list">
-                <div class="task-item" id="mainTasklItem">
+                <div class="task-item" id="mainTasklItem" data-index="0">
                     <input class="checkbox" type="checkbox">
                     <label class="label" for="task-list">Example Task</label>
-                    <input class="checkbox-important" type="checkbox">
+                    <input class="checkbox-important" type="checkbox" id="important">
                     <label class="label-important" for="important">Important</label>
                     <button class="icon-delete" id="iconDelete"><img src="icons/borrar.png" alt="Delete Icon"></button>
                 </div>
@@ -47,11 +50,15 @@
         </section>
         <section class="main-important-list" id="mainImportantList" style="display: none;">
             <header>Important</header>
-            <div id="important-tasks-container"></div>
+            <div id="important-tasks-container" class="task-list">
+              <div class="important-task-item" data-index="0"></div>
+            </div>
         </section>
         <section class="main-completed-list" id="mainCompletedList" style="display: none;">
             <header>Completed</header>
-            <div id="completed-tasks-container" class="task-list"></div>
+            <div id="completed-tasks-container" class="task-list" >
+              <div class="completed-task-item" data-index="1"></div>
+            </div>
         </section>
         <section class="main-custom-list" id="mainCustomList" style="display: none;">
             <header>Custom List</header>
@@ -76,13 +83,13 @@
             </div>
         </form>
         <div class="form-check form-check-inline">
-            <input class="form-check-input" type="checkbox" id="inlineCheckboxCompleted" value="option1">
-            <label class="form-check-label" for="inlineCheckbox1">Completed</label>
-          </div>
-          <div class="form-check form-check-inline">
-            <input class="form-check-input" type="checkbox" id="inlineCheckboxImportant" value="option2">
-            <label class="form-check-label" for="inlineCheckbox2">Important</label>
-          </div>
+          <input class="form-check-input" type="checkbox" id="inlineCheckboxCompleted" value="option1">
+          <label class="form-check-label" for="inlineCheckboxCompleted">Completed</label>
+      </div>
+      <div class="form-check form-check-inline">
+          <input class="form-check-input" type="checkbox" id="inlineCheckboxImportant" value="option2">
+          <label class="form-check-label" for="inlineCheckboxImportant">Important</label>
+      </div>
           <hr>
           <select class="form-select" id="customListSelect" aria-label="Default select example">
             <option selected>Select a custom list</option>
@@ -106,8 +113,6 @@
     </div>
     </div>
     </main>
-    <script type="module" src="dist/main.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
 </body>
 </html>
-

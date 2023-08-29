@@ -1,4 +1,16 @@
-interface TaskDetails {
+
+import { addTaskToCompleted, addTaskToImportant, attachClickHandlersToCompletedTasks } from "./completed.js";
+import { attachClickHandlersToImportantTasks } from "./important.js";
+
+const buttonNewTask = document.getElementById("buttonNewTask") as HTMLButtonElement;
+const modal = document.querySelector(".modal") as HTMLElement;
+const saveChangesButton = document.querySelector(".modal-footer .btn-primary") as HTMLButtonElement;
+ 
+window.addEventListener("load", init); 
+
+function init() {
+
+ interface TaskDetails {
     title: string;
     description: string;
     completed: boolean;
@@ -7,22 +19,15 @@ interface TaskDetails {
     taskColorIndex: string;
 }
 
-const tasks: TaskDetails[] = [];
+ const tasks: TaskDetails[] = [];
 
-    const buttonNewTask = document.getElementById("buttonNewTask") as HTMLButtonElement;
-    const modal = document.querySelector(".modal") as HTMLElement;
-    const saveChangesButton = document.querySelector(".modal-footer .btn-primary") as HTMLButtonElement;
     const importantSidebarLink = document.getElementById("important-list") as HTMLElement;
     const taskSidebarLink = document.getElementById("task-list") as HTMLElement;
     const mainImportantList = document.getElementById("main-important-list") as HTMLElement;
     const mainTaskList = document.getElementById("main-task-list") as HTMLElement;
     const importantTasksContainer = document.getElementById("important-tasks-container") as HTMLElement;
     const cancelButton = document.querySelector(".modal-footer .btn-secondary") as HTMLButtonElement;
-    const taskItem = document.querySelector(".taskItem") as HTMLElement;
-    const mainTaskContainer = document.getElementById("mainTasklItem") as HTMLElement;
     const taskList = document.getElementById("task-list") as HTMLElement;
-
-    
 
     buttonNewTask.addEventListener("click", () => {
         modal.style.display = "block";
@@ -58,9 +63,7 @@ const tasks: TaskDetails[] = [];
     });
 });
 
-let importantTaskCloned = false;
-
-    saveChangesButton.addEventListener("click", () => {
+ saveChangesButton.addEventListener("click", () => {
         const title = document.getElementById("titleNewTask") as HTMLInputElement;
         const description = document.getElementById("descriptionText") as HTMLTextAreaElement;
         const completed = document.getElementById("inlineCheckboxCompleted") as HTMLInputElement;
@@ -114,7 +117,8 @@ let importantTaskCloned = false;
     
         if (completed.checked) {
             const completedList = document.getElementById("completed-tasks-container") as HTMLElement;
-            completedList.appendChild(taskItem);
+            addTaskToCompleted(taskItem, newTaskDetails);
+
             if (important.checked) {
                 importantTasksContainer.removeChild(taskItem);
             } else {
@@ -123,9 +127,7 @@ let importantTaskCloned = false;
             
         } else if (important.checked) {
             const taskItemCopy = taskItem.cloneNode(true) as HTMLElement;
-            const index = tasks.length - 1; // Index of the last added task
-            taskItemCopy.setAttribute("data-index", index.toString());
-            importantTasksContainer.appendChild(taskItemCopy);
+            addTaskToImportant(taskItemCopy, newTaskDetails);
             importantCheckbox.checked = true;
 
             const deleteButtonCopy = taskItemCopy.querySelector(".icon-delete");
@@ -138,10 +140,7 @@ let importantTaskCloned = false;
             const taskList = document.getElementById("task-list") as HTMLElement;
             taskList.appendChild(taskItem);
 
-            // Agregar el manejador de eventos para abrir el modal al hacer clic en la tarea
-                    // Agregar el manejador de eventos para abrir el modal al hacer clic en la tarea
         taskItem.addEventListener("click", () => {
-            // Llenar los campos del modal con los detalles de la tarea recién creada
             const titleModal = document.getElementById("titleNewTask") as HTMLInputElement;
             const descriptionModal = document.getElementById("descriptionText") as HTMLTextAreaElement;
             const completedModal = document.getElementById("inlineCheckboxCompleted") as HTMLInputElement;
@@ -156,7 +155,7 @@ let importantTaskCloned = false;
             customListSelectModal.value = newTaskDetails.customListIndex;
             taskColorSelectModal.value = newTaskDetails.taskColorIndex;
 
-            // Mostrar el modal
+            
             modal.style.display = "block";
         });
         }
@@ -175,7 +174,7 @@ let importantTaskCloned = false;
             customListIndex: customListSelect.value,
             taskColorIndex: taskColorSelect.value
         });
-    
+        
     
         modal.style.display = "none";
     });
@@ -187,25 +186,29 @@ let importantTaskCloned = false;
     importantSidebarLink.addEventListener("click", () => {
         mainImportantList.style.display = "block";
         mainTaskList.style.display = "none";
+
+        attachClickHandlersToImportantTasks();
     });
 
     taskSidebarLink.addEventListener("click", () => {
         mainImportantList.style.display = "none";
         mainTaskList.style.display = "block";
+
+        attachClickHandlersToImportantTasks();
     });
 
     const sidebarItems = document.querySelectorAll(".sidebar li");
     const mainSections = document.querySelectorAll(".main-content section");
 
-const taskHeader = document.querySelector(".sidebar ul li") as HTMLElement;
-const taskSection = document.querySelector("#main-task-list") as HTMLElement;
-
-taskHeader.addEventListener("click", () => {
-    mainSections.forEach(section => {
-        (section as HTMLElement).style.display = "none";
+    const taskHeader = document.getElementById("header-task-list") as HTMLElement;
+    const taskSection = document.getElementById("main-task-list") as HTMLElement;
+    
+    taskHeader.addEventListener("click", () => {
+        mainSections.forEach(section => {
+            (section as HTMLElement).style.display = "none";
+        });
+        taskSection.style.display = "block";
     });
-    taskSection.style.display = "block";
-});
 
 sidebarItems.forEach((item, index) => {
     item.addEventListener("click", () => {
@@ -216,34 +219,4 @@ sidebarItems.forEach((item, index) => {
         const clickedSection = mainSections[index] as HTMLElement;
         clickedSection.style.display = "block";
     });
-});
-
-const taskDetailsArray: TaskDetails[] = [];
-
-function fillModalFields(taskDetails: TaskDetails) {
-    const titleModal = document.getElementById("titleNewTask") as HTMLInputElement;
-    const descriptionModal = document.getElementById("descriptionText") as HTMLTextAreaElement;
-    const completedModal = document.getElementById("inlineCheckboxCompleted") as HTMLInputElement;
-    const importantModal = document.getElementById("inlineCheckboxImportant") as HTMLInputElement;
-    const customListSelectModal = document.getElementById("customListSelect") as HTMLSelectElement;
-    const taskColorSelectModal = document.getElementById("taskColorSelect") as HTMLSelectElement;
-
-    titleModal.value = taskDetails.title;
-    descriptionModal.value = taskDetails.description;
-    completedModal.checked = taskDetails.completed;
-    importantModal.checked = taskDetails.important;
-    customListSelectModal.value = taskDetails.customListIndex;
-    taskColorSelectModal.value = taskDetails.taskColorIndex;
-
-    modal.style.display = "block";
-};
-
-importantTasksContainer.addEventListener("click", (event) => {
-    const taskItemClicked = (event.target as HTMLElement).closest(".task-item");
-    if (taskItemClicked) {
-        const index = parseInt(taskItemClicked.getAttribute("data-index") || "0");
-        const taskDetails = tasks[index];
-
-        fillModalFields(taskDetails);
-    }
-});
+})};
