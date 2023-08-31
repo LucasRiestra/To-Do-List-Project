@@ -134,6 +134,7 @@ function init() {
         if (completed.checked) {
             const completedTasksContainer = document.getElementById("completed-tasks-container") as HTMLElement;
             addTaskToCompleted(taskItem, newTaskDetails);
+            taskLabel.style.textDecoration = "line-through";
             checkbox.checked = true;
 
             if (important.checked) {
