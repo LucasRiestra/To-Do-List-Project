@@ -4,7 +4,7 @@ const buttonNewTask = document.getElementById("buttonNewTask");
 const modal = document.querySelector(".modal");
 const saveChangesButton = document.querySelector(".modal-footer .btn-primary");
 const importantTasksContainer = document.getElementById("important-tasks-container");
-const tasks = [];
+const tasks = JSON.parse(localStorage.getItem("tasks") || "[]");
 window.addEventListener("load", init);
 function init() {
     const tasks = [];
@@ -15,6 +15,9 @@ function init() {
     const importantTasksContainer = document.getElementById("important-tasks-container");
     const cancelButton = document.querySelector(".modal-footer .btn-secondary");
     const taskList = document.getElementById("task-list");
+    const completedSidebarLink = document.getElementById("completed-list");
+    const mainCompletedList = document.getElementById("mainCompletedList");
+    const completedTasksContainer = document.getElementById("completed-tasks-container");
     buttonNewTask.addEventListener("click", () => {
         modal.style.display = "block";
         const title = document.getElementById("titleNewTask");
@@ -86,8 +89,9 @@ function init() {
             taskColorIndex: taskColorSelect.value
         };
         if (completed.checked) {
-            const completedList = document.getElementById("completed-tasks-container");
+            const completedTasksContainer = document.getElementById("completed-tasks-container");
             addTaskToCompleted(taskItem, newTaskDetails);
+            checkbox.checked = true;
             if (important.checked) {
                 importantTasksContainer.removeChild(taskItem);
             }
@@ -145,12 +149,16 @@ function init() {
     });
     importantSidebarLink.addEventListener("click", () => {
         mainImportantList.style.display = "block";
+        mainCompletedList.style.display = "none";
         mainTaskList.style.display = "none";
+        attachClickHandlersToCompletedTasks();
         attachClickHandlersToImportantTasks();
     });
     taskSidebarLink.addEventListener("click", () => {
         mainImportantList.style.display = "none";
+        mainCompletedList.style.display = "none";
         mainTaskList.style.display = "block";
+        attachClickHandlersToCompletedTasks();
         attachClickHandlersToImportantTasks();
     });
     const sidebarItems = document.querySelectorAll(".sidebar li");
@@ -158,8 +166,8 @@ function init() {
     const taskHeader = document.getElementById("header-task-list");
     const taskSection = document.getElementById("main-task-list");
     taskHeader.addEventListener("click", () => {
-        mainSections.forEach(section => {
-            section.style.display = "none";
+        mainSections.forEach(sections => {
+            sections.style.display = "none";
         });
         taskSection.style.display = "block";
     });

@@ -1,4 +1,4 @@
-const tasks = [];
+const tasks = JSON.parse(localStorage.getItem("tasks") || "[]");
 const importantTasksContainer = document.querySelector(".tasks-item");
 export function openModalWithTaskDetails(taskDetails) {
     const modal = document.querySelector(".modal");

@@ -7,7 +7,7 @@ const modal = document.querySelector(".modal") as HTMLElement;
 const saveChangesButton = document.querySelector(".modal-footer .btn-primary") as HTMLButtonElement;
 
 const importantTasksContainer = document.getElementById("important-tasks-container") as HTMLElement;
-const tasks: TaskDetails[] = [];
+const tasks: TaskDetails[] = JSON.parse(localStorage.getItem("tasks") || "[]");
 
 interface TaskDetails {
     title: string;
@@ -40,6 +40,9 @@ function init() {
     const importantTasksContainer = document.getElementById("important-tasks-container") as HTMLElement;
     const cancelButton = document.querySelector(".modal-footer .btn-secondary") as HTMLButtonElement;
     const taskList = document.getElementById("task-list") as HTMLElement;
+    const completedSidebarLink = document.getElementById("completed-list") as HTMLElement;
+    const mainCompletedList = document.getElementById("mainCompletedList") as HTMLElement;
+    const completedTasksContainer = document.getElementById("completed-tasks-container") as HTMLElement;
 
 
 
@@ -100,7 +103,7 @@ function init() {
         importantCheckbox.type = "checkbox";
         importantCheckbox.className = "important-checkbox"
         taskItem.appendChild(importantCheckbox);
-    
+
         const importantLabel = document.createElement("label");
         importantLabel.textContent = "Important";
         taskItem.appendChild(importantLabel);
@@ -129,8 +132,9 @@ function init() {
         };
     
         if (completed.checked) {
-            const completedList = document.getElementById("completed-tasks-container") as HTMLElement;
+            const completedTasksContainer = document.getElementById("completed-tasks-container") as HTMLElement;
             addTaskToCompleted(taskItem, newTaskDetails);
+            checkbox.checked = true;
 
             if (important.checked) {
                 importantTasksContainer.removeChild(taskItem);
@@ -188,8 +192,6 @@ function init() {
             customListIndex: customListSelect.value,
             taskColorIndex: taskColorSelect.value
         });
-        
-    
         modal.style.display = "none";
     });
     
@@ -197,19 +199,21 @@ function init() {
         modal.style.display = "none";
     });
 
-    
-
     importantSidebarLink.addEventListener("click", () => {
         mainImportantList.style.display = "block";
+        mainCompletedList.style.display = "none";
         mainTaskList.style.display = "none";
 
+        attachClickHandlersToCompletedTasks();
         attachClickHandlersToImportantTasks();
     });
 
     taskSidebarLink.addEventListener("click", () => {
         mainImportantList.style.display = "none";
+        mainCompletedList.style.display = "none";
         mainTaskList.style.display = "block";
 
+        attachClickHandlersToCompletedTasks();
         attachClickHandlersToImportantTasks();
     });
 
@@ -220,8 +224,8 @@ function init() {
     const taskSection = document.getElementById("main-task-list") as HTMLElement;
     
     taskHeader.addEventListener("click", () => {
-        mainSections.forEach(section => {
-            (section as HTMLElement).style.display = "none";
+        mainSections.forEach(sections => {
+            (sections as HTMLElement).style.display = "none";
         });
         taskSection.style.display = "block";
     });
@@ -237,10 +241,7 @@ sidebarItems.forEach((item, index) => {
     });
 })};
 
-
-
 attachClickHandlersToImportantTasks();
-
 attachClickHandlersToCompletedTasks();
 importantTasksContainer.addEventListener("click", (event) => {
     const target = event.target as HTMLElement; 
@@ -254,3 +255,5 @@ importantTasksContainer.addEventListener("click", (event) => {
         }
     }
 });
+
+

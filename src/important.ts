@@ -7,7 +7,7 @@ interface TaskDetails {
     taskColorIndex: string;
 }
 
-const tasks: TaskDetails[] = [];
+const tasks: TaskDetails[] = JSON.parse(localStorage.getItem("tasks") || "[]");
 const importantTasksContainer = document.querySelector(".tasks-item") as HTMLElement;
 
 
@@ -33,9 +33,9 @@ export function openModalWithTaskDetails(taskDetails: TaskDetails) {
 }
 
 export function addTaskToImportant(taskItem: HTMLElement, taskDetails: TaskDetails) {
-    tasks.push(taskDetails); // Agregar la tarea al array
+    tasks.push(taskDetails); 
     importantTasksContainer.appendChild(taskItem);
-    attachClickHandlersToImportantTasks(); // Vuelve a adjuntar los manejadores de clic
+    attachClickHandlersToImportantTasks(); 
 }
 
 export function attachClickHandlersToImportantTasks() {
@@ -43,7 +43,7 @@ export function attachClickHandlersToImportantTasks() {
 
     importantTasks.forEach((taskItem, index) => {
         taskItem.addEventListener("click", () => {
-            const taskDetails = tasks[index]; // Usa el índice correspondiente en el array
+            const taskDetails = tasks[index]; 
             openModalWithTaskDetails(taskDetails);
         });
     });
